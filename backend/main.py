@@ -1,10 +1,23 @@
 from typing import Union
 
 from fastapi import FastAPI
+from db.session import engine
+from db.base_class import Base
 from core.config import Settings
 
-app = FastAPI(title=Settings.PROJECT_TITLE, version=Settings.PROJECT_VERSION,
-              description=Settings.PROJECT_DESCRIPTION)
+
+def create_tables():  # new
+    Base.metadata.create_all(bind=engine)
+
+
+def start_application():
+    app = FastAPI(title=Settings.PROJECT_TITLE, version=Settings.PROJECT_VERSION,
+                  description=Settings.PROJECT_DESCRIPTION)
+    create_tables()
+    return app
+
+
+app = start_application()
 
 
 @app.get("/")
