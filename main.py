@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, Response
+import uvicorn
 from db.session import engine
 from db.base import Base
 from core.config import Settings
@@ -36,3 +37,7 @@ app.middleware('http')(catch_exceptions_middleware)
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
